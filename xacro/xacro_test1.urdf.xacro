@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+
+<robot name="rrbot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<xacro:property name="robotname" value="jaejun"/>
+	<xacro:property name="PI" value="3.1415926535897931"/>
+	<xacro:property name="length" value="3.5"/>
+	<xacro:property name="width" value="0.55"/>
+	<xacro:macro name="default_origin">
+		<origin xyz="0 0 0" rpy="0 0 0"/>
+	</xacro:macro>
+	<xacro:macro name="default_inertial" params="mass">
+		<inertial>
+			<mass value="${2.0*mass}"/>
+			<inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+		</inertial>
+	</xacro:macro>
+	
+	<xacro:macro name="blue_shape" params="name *hey_man">
+		<link name="${name}">
+			<visual>
+				<geometry>
+					<xacro:insert_block name="hey_man"/>
+				</geometry>
+				<material name="blue">
+					<color rgba="0 0 .8 1"/>
+				</material>
+			</visual>
+			<collision>
+				<geometry>
+					<xacro:insert_block name="hey_man"/>
+				</geometry>
+			</collision>
+		</link>
+	</xacro:macro>
+
+	<xacro:macro name="anonymous_block" params="*block">
+		<xacro:insert_block name="block"/>
+	</xacro:macro>
+
+<!--		Implementation	 		-->
+
+
+	<link name="${robotname}_leg">
+		<!-- macro with parameter example -->
+		<xacro:default_inertial mass="11.0"/>
+		<visual>
+			<geometry>
+				<!-- constant Example-->
+				<cylinder radius="${width}" length="${length}"/>
+				<!-- macro example-->
+				<xacro:default_origin/>
+			</geometry>
+		</visual>
+		<collision>
+			<geometry>
+				<cylinder radius="${width}" length="${length}"/>
+				<xacro:default_origin/>
+			</geometry>
+		</collision>
+	</link>
+
+<!-- insert_block example1-->
+	<xacro:blue_shape name="base_link">
+		<cylinder radius=".42" length=".01"/>
+	</xacro:blue_shape>
+
+
+
+
+
+<!-- insert_block example2-->
+	<xacro:anonymous_block>
+		<!--Comments in the block will have no effect to output file-->
+		<link name="anonymous_link">
+			<visual>
+				<geometry>
+					<cylinder length="${length}" radius="${width}"/>
+				</geometry>
+			</visual>
+			<collision>
+				<geometry>
+					<cylinder length="${length}" radius="${width}"/>
+				</geometry>					
+			</collision>
+		</link>
+	</xacro:anonymous_block>
+
+</robot>
